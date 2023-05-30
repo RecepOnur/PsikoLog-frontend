@@ -1,13 +1,9 @@
 import { EventEmitter } from 'events';
 import { LOGIN_PSYCHOLOGIST, PSYCHOLOGIST_LOGGEDIN, PSYCHOLOGIST_REGISTERED, REGISTER_PSYCHOLOGIST, PSYCHOLOGIST_REGISTER_ERROR, PSYCHOLOGIST_LOGIN_ERROR } from '../constants/ActionTypes';
 import dispatcher from '../dispatcher/Dispatcher';
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3000'
+import axios from '../config';
 
 class PsychologistStore extends EventEmitter {
-  constructor() {
-    super();
-  }
 
   handleAction(action) {
     switch (action.type) {
@@ -67,7 +63,7 @@ class PsychologistStore extends EventEmitter {
         console.log("Data:", data);
         if (data.success) {
           // Psikolog başarıyla giriş yaptığında emit işlemi gerçekleştir
-          this.emit(PSYCHOLOGIST_LOGGEDIN);
+          this.emit(PSYCHOLOGIST_LOGGEDIN, data.token);
         } else {
           // Hata durumunda emit işlemi gerçekleştir
           this.emit(PSYCHOLOGIST_LOGIN_ERROR);

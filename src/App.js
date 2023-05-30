@@ -1,29 +1,61 @@
-import { useState } from 'react';
 import './App.css';
-import Navbar from './components/Navbar';
+import { useState } from 'react';
 import MainPage from './components/MainPage';
 import PatientSignUp from './components/PatientSignUp';
 import PatientSignIn from './components/PatientSignIn';
 import PsychologistSignUp from './components/PsychologistSignUp';
 import PsychologistSignIn from './components/PsychologistSignIn';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Psychologists from './components/Psychologists';
+import ChatBot from './components/ChatBot';
+import Navbar from './components/Navbar';
+import { setAuthToken } from './config';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [activePage, setActivePage] = useState("mainPage");
-  
-  const handlePageChange = (page) => {
-    setActivePage(page);
+  console.log(isLoggedIn);
+
+  if(isLoggedIn){
+    setAuthToken(localStorage.getItem("token"));
   }
 
   return (
-    <div>
-      <Navbar changePage={handlePageChange}/>
-      {activePage === "mainPage" && <MainPage changePage={handlePageChange}/>}
-      {activePage === "patientSignUp" && <PatientSignUp changePage={handlePageChange}/>}
-      {activePage === "patientSignIn" && <PatientSignIn changePage={handlePageChange}/>}
-      {activePage === "psychologistSignUp" && <PsychologistSignUp changePage={handlePageChange}/>}
-      {activePage === "psychologistSignIn" && <PsychologistSignIn changePage={handlePageChange}/>}
-    </div>
+    <Router>
+      <div>
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+        <Routes>
+          <Route
+            path="/"
+            element={<MainPage />}
+          />
+          <Route
+            path="/patientSignUp"
+            element={<PatientSignUp />}
+          />
+          <Route
+            path="/patientSignIn"
+            element={<PatientSignIn setIsLoggedIn={setIsLoggedIn} />}
+          />
+          <Route
+            path="/psychologistSignUp"
+            element={<PsychologistSignUp />}
+          />
+          <Route
+            path="/psychologistSignIn"
+            element={<PsychologistSignIn setIsLoggedIn={setIsLoggedIn} />}
+          />
+          <Route
+            path="/psychologists"
+            element={<Psychologists />}
+          />
+          <Route
+            path="/chatbot"
+            element={<ChatBot />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

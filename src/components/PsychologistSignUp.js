@@ -5,8 +5,6 @@ import { PSYCHOLOGIST_REGISTERED, PSYCHOLOGIST_REGISTER_ERROR } from '../constan
 
 const PsychologistSignUp = (props) => {
 
-  const { changePage } = props;
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,7 +17,6 @@ const PsychologistSignUp = (props) => {
 
     const handleRegistered = () => {
       window.alert("Kayıt başarılı!");
-      changePage("psychologistSignIn");
     };
 
     const handleRegisterError = () => {
@@ -32,9 +29,9 @@ const PsychologistSignUp = (props) => {
 
     return () => {
       psychologistStore.off(PSYCHOLOGIST_REGISTERED, handleRegistered);
-      psychologistStore.on(PSYCHOLOGIST_REGISTER_ERROR, handleRegisterError);
+      psychologistStore.off(PSYCHOLOGIST_REGISTER_ERROR, handleRegisterError);
     };
-  }, [changePage]);
+  });
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -52,8 +49,9 @@ const PsychologistSignUp = (props) => {
   const { email, password, confirmPassword, name, surname } = formData;
 
   return (
+    <div>
     <div className="form-container">
-      <h2>Hasta Kayıt Ol</h2>
+      <h2>Psikolog Kayıt Ol</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="firstName">İsim:</label>
@@ -112,6 +110,7 @@ const PsychologistSignUp = (props) => {
         </div>
         <button type="submit">Kayıt Ol</button>
       </form>
+    </div>
     </div>
   );
 };

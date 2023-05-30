@@ -1,14 +1,9 @@
 import { EventEmitter } from 'events';
-import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, PSYCHOLOGIST_LIST, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR } from '../constants/ActionTypes';
+import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR } from '../constants/ActionTypes';
 import dispatcher from '../dispatcher/Dispatcher';
-import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:3000'
+import axios from '../config';
 
 class PatientStore extends EventEmitter {
-  constructor() {
-    super();
-    console.log("PatientStore constructor");
-  }
 
   handleAction(action) {
     console.log("PatientStore handleAction");
@@ -74,7 +69,7 @@ class PatientStore extends EventEmitter {
         if (data.success) {
           // Hasta başarıyla giriş yaptığında emit işlemi gerçekleştir
           console.log("PATIENT_LOGIN emit.");
-          this.emit(PATIENT_LOGGEDIN);
+          this.emit(PATIENT_LOGGEDIN, data.token);
         } else {
           // Hata durumunda emit işlemi gerçekleştir
           console.log("ERROR_EVENT emit.");

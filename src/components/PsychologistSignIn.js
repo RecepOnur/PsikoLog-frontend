@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { loginPsychologist } from '../actions/PsychologistActions';
 import { PSYCHOLOGIST_LOGGEDIN, PSYCHOLOGIST_LOGIN_ERROR } from '../constants/ActionTypes';
 import psychologistStore from '../stores/PsychologistStore';
+import { useNavigate } from 'react-router-dom';
 
 const PsychologistSignIn = (props) => {
 
-  const { changePage } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleLoggedIn = () => {
+    const handleLoggedIn = (token) => {
+      localStorage.setItem("token", token);
+      props.setIsLoggedIn(true);
       window.alert("Giriş başarılı!");
+      navigate("/");
     };
   
     const handleLoginError = () => {
@@ -24,7 +28,7 @@ const PsychologistSignIn = (props) => {
       psychologistStore.off(PSYCHOLOGIST_LOGGEDIN, handleLoggedIn);
       psychologistStore.off(PSYCHOLOGIST_LOGIN_ERROR, handleLoginError);
     };
-  }, [changePage]);
+  });
 
   const [formData, setFormData] = useState({
     email: '',
@@ -47,6 +51,7 @@ const PsychologistSignIn = (props) => {
   const { email, password } = formData;
 
   return (
+    <div>
     <div className="form-container">
       <h2>Psikolog Giris Yap</h2>
       <form onSubmit={handleSubmit}>
@@ -74,6 +79,7 @@ const PsychologistSignIn = (props) => {
         </div>
         <button type="submit">Giris Yap</button>
       </form>
+    </div>
     </div>
   );
 };

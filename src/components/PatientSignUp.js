@@ -3,9 +3,7 @@ import patientStore from '../stores/PatientStore';
 import { registerPatient } from '../actions/PatientActions';
 import { PATIENT_REGISTERED, PATIENT_REGISTER_ERROR } from '../constants/ActionTypes';
 
-const PatientSignUp = (props) => {
-
-  const { changePage } = props;
+const PatientSignUp = () => {
 
   const [formData, setFormData] = useState({
     email: '',
@@ -20,7 +18,6 @@ const PatientSignUp = (props) => {
 
     const handleRegistered = () => {
       window.alert("Kayıt başarılı!");
-      changePage("patientSignIn");
     };
 
     const handleRegisterError = () => {
@@ -36,7 +33,7 @@ const PatientSignUp = (props) => {
       patientStore.off(PATIENT_REGISTERED, handleRegistered);
       patientStore.on(PATIENT_REGISTER_ERROR, handleRegisterError);
     };
-  }, [changePage]);
+  });
 
 
 
@@ -57,6 +54,7 @@ const PatientSignUp = (props) => {
   const { email, password, confirmPassword, name, surname } = formData;
 
   return (
+    <div>
     <div className="form-container">
       <h2>Hasta Kayıt Ol</h2>
       <form onSubmit={handleSubmit}>
@@ -117,6 +115,7 @@ const PatientSignUp = (props) => {
         </div>
         <button type="submit">Kayıt Ol</button>
       </form>
+    </div>
     </div>
   );
 };

@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { loginPatient } from '../actions/PatientActions';
 import { PATIENT_LOGGEDIN, PATIENT_LOGIN_ERROR } from '../constants/ActionTypes';
 import patientStore from '../stores/PatientStore';
+import { useNavigate } from 'react-router-dom';
 
 const PatientSignIn = (props) => {
 
-  const { changePage } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleLoggedIn = () => {
+    const handleLoggedIn = (token) => {
+      localStorage.setItem("token", token);
+      props.setIsLoggedIn(true);
       window.alert("Giriş başarılı!");
+      navigate("/");
     };
   
     const handleLoginError = () => {
@@ -24,7 +28,7 @@ const PatientSignIn = (props) => {
       patientStore.off(PATIENT_LOGGEDIN, handleLoggedIn);
       patientStore.off(PATIENT_LOGIN_ERROR, handleLoginError);
     };
-  }, [changePage]);
+  });
 
   const [formData, setFormData] = useState({
     email: '',
@@ -47,6 +51,7 @@ const PatientSignIn = (props) => {
   const { email, password } = formData;
 
   return (
+    <div>
     <div className="form-container">
       <h2>Hasta Giris Yap</h2>
       <form onSubmit={handleSubmit}>
@@ -74,6 +79,7 @@ const PatientSignIn = (props) => {
         </div>
         <button type="submit">Giris Yap</button>
       </form>
+    </div>
     </div>
   );
 };

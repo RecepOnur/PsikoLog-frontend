@@ -1,12 +1,12 @@
 import React from 'react';
 
-function MainPage() {
+function ChatBot() {
 
   return (
     <div className="container">
-      <h1>Ana Sayfa</h1>
+      <h1>ChatBot</h1>
     </div>
   );
 }
 
-export default MainPage;
+export default ChatBot;

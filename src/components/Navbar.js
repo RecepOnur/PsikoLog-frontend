@@ -1,29 +1,40 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-function Navbar(props) {
-  const handleButtonClick = (page) => {
-    props.changePage(page);
+const Navbar = (props) => {
+
+  const handleLogout = () => {
+    // Çıkış işlemini gerçekleştirmek için gerekli kodu buraya ekleyin
+    // Örneğin, localStorage veya çerezlerden tokeni kaldırabilirsiniz
+    // setIsLoggedIn(false) olarak ayarlayın
+    localStorage.removeItem('token');
+    props.setIsLoggedIn(false);
   };
 
   return (
-    <div className="container">
-      <h1>PsikoLog</h1>
-      <div className="button-container">
-        <button className="button" onClick={() => handleButtonClick("patientSignUp")}>
-          Hasta Kayıt
-        </button>
-        <button className="button" onClick={() => handleButtonClick("patientSignIn")}>
-          Hasta Giriş
-        </button>
-        <button className="button" onClick={() => handleButtonClick("psychologistSignUp")}>
-          Psikolog Kayıt
-        </button>
-        <button className="button" onClick={() => handleButtonClick("psychologistSignIn")}>
-          Psikolog Giriş
-        </button>
-      </div>
-    </div>
+    <nav>
+      <ul>
+        <li><Link to="/">Ana Sayfa</Link></li>
+        <li><Link to="/psychologists">Psikologlar</Link></li>
+        <li><Link to="/chatbot">ChatBot</Link></li>
+        {props.isLoggedIn ? (
+          <>
+            {/* Giriş yapıldıktan sonra gösterilecek öğeler */}
+            <li>
+              <button onClick={handleLogout}>Çıkış Yap</button>
+            </li>
+          </>
+        ) : (
+          <>
+            {/* Giriş yapılmadan önce gösterilecek öğeler */}
+            <li><Link to="/patientSignUp">Hasta Kayıt</Link></li>
+            <li><Link to="/patientSignIn">Hasta Giriş</Link></li>
+            <li><Link to="/psychologistSignUp">Psikolog Kayıt</Link></li>
+            <li><Link to="/psychologistSignIn">Psikolog Giriş</Link></li>
+          </>
+        )}
+      </ul>
+    </nav>
   );
-}
+};
 
 export default Navbar;
