@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MainPage from './components/MainPage';
 import PatientSignUp from './components/PatientSignUp';
 import PatientSignIn from './components/PatientSignIn';
@@ -10,20 +10,31 @@ import Psychologists from './components/Psychologists';
 import ChatBot from './components/ChatBot';
 import Navbar from './components/Navbar';
 import { setAuthToken } from './config';
+import PsychologistProfile from './components/PsychologistProfile';
+import CreateAppointment from './components/CreateAppointment';
+import myAxios from './config';
+import Appointments from './components/Appointments';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log(isLoggedIn);
-
-  if(isLoggedIn){
-    setAuthToken(localStorage.getItem("token"));
+  useEffect(() => {
+    console.log(isLoggedIn);
+    
+    if (localStorage.getItem("token") != null) {
+      setIsLoggedIn(true);
+      setAuthToken(localStorage.getItem("token")); //Axios icin auth token
+      console.log("Axios: " + myAxios.defaults.headers.common["Authorization"]);
+    }
   }
+    , [isLoggedIn])
+
+
 
   return (
     <Router>
       <div>
-        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         <Routes>
           <Route
             path="/"
@@ -48,6 +59,22 @@ function App() {
           <Route
             path="/psychologists"
             element={<Psychologists />}
+          />
+          <Route
+            path="/psychologists/:id"
+            element={<PsychologistProfile />}
+          />
+          <Route
+            path="/createAppointment/:id"
+            element={<CreateAppointment />}
+          />
+          <Route
+            path="/createAppointment/:id"
+            element={<CreateAppointment />}
+          />
+          <Route
+            path="/appointments"
+            element={<Appointments />}
           />
           <Route
             path="/chatbot"

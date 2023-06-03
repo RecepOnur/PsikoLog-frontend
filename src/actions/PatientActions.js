@@ -1,5 +1,5 @@
 import dispatcher from "../dispatcher/Dispatcher";
-import { LOGIN_PATIENT, REGISTER_PATIENT } from "../constants/ActionTypes";
+import { LOGIN_PATIENT, REGISTER_PATIENT, CREATE_APPOINTMENT, DELETE_APPOINTMENT } from "../constants/ActionTypes";
 
 export const registerPatient = (user) => {
   console.log("PatientActions registerPatient");
@@ -15,3 +15,18 @@ export const loginPatient = (user) => {
     payload: user
   });
 };
+
+export const createAppointment = (form) => {
+  dispatcher.dispatch({
+    type: CREATE_APPOINTMENT,
+    payload: form
+  });
+};
+
+export const deleteAppointment = (appointment) => {
+  dispatcher.dispatch({
+    type: DELETE_APPOINTMENT,
+    payload: appointment
+  });
+};
+

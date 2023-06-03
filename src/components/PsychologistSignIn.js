@@ -4,14 +4,14 @@ import { PSYCHOLOGIST_LOGGEDIN, PSYCHOLOGIST_LOGIN_ERROR } from '../constants/Ac
 import psychologistStore from '../stores/PsychologistStore';
 import { useNavigate } from 'react-router-dom';
 
-const PsychologistSignIn = (props) => {
+const PsychologistSignIn = ({setIsLoggedIn}) => {
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleLoggedIn = (token) => {
       localStorage.setItem("token", token);
-      props.setIsLoggedIn(true);
+      setIsLoggedIn(true);
       window.alert("Giriş başarılı!");
       navigate("/");
     };
@@ -28,7 +28,7 @@ const PsychologistSignIn = (props) => {
       psychologistStore.off(PSYCHOLOGIST_LOGGEDIN, handleLoggedIn);
       psychologistStore.off(PSYCHOLOGIST_LOGIN_ERROR, handleLoginError);
     };
-  });
+  }, [navigate, setIsLoggedIn]);
 
   const [formData, setFormData] = useState({
     email: '',

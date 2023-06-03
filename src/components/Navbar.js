@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = (props) => {
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Çıkış işlemini gerçekleştirmek için gerekli kodu buraya ekleyin
@@ -8,6 +11,7 @@ const Navbar = (props) => {
     // setIsLoggedIn(false) olarak ayarlayın
     localStorage.removeItem('token');
     props.setIsLoggedIn(false);
+    navigate('/');
   };
 
   return (
@@ -15,6 +19,7 @@ const Navbar = (props) => {
       <ul>
         <li><Link to="/">Ana Sayfa</Link></li>
         <li><Link to="/psychologists">Psikologlar</Link></li>
+        <li><Link to="/appointments">Randevularım</Link></li>
         <li><Link to="/chatbot">ChatBot</Link></li>
         {props.isLoggedIn ? (
           <>

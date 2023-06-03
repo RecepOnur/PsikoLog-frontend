@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { LOGIN_PSYCHOLOGIST, PSYCHOLOGIST_LOGGEDIN, PSYCHOLOGIST_REGISTERED, REGISTER_PSYCHOLOGIST, PSYCHOLOGIST_REGISTER_ERROR, PSYCHOLOGIST_LOGIN_ERROR } from '../constants/ActionTypes';
 import dispatcher from '../dispatcher/Dispatcher';
-import axios from '../config';
+import myAxios from '../config';
 
 class PsychologistStore extends EventEmitter {
 
@@ -25,11 +25,7 @@ class PsychologistStore extends EventEmitter {
     const { name, surname, email, password } = user;
 
     // Psikolog kaydı için gerekli HTTP POST isteği yap
-    axios.post('/psychologist/register', { name, surname, email, password }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    myAxios.post('/psychologist/register', { name, surname, email, password })
       .then(response => response.data)
       .then(data => {
         console.log("Data:", data);
@@ -53,11 +49,7 @@ class PsychologistStore extends EventEmitter {
     const {email, password} = user;
 
     // Psikolog girişi için gerekli HTTP POST isteği yap
-    axios.post('/psychologist/login', { email, password }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    myAxios.post('/psychologist/login', { email, password })
       .then(response => response.data)
       .then(data => {
         console.log("Data:", data);

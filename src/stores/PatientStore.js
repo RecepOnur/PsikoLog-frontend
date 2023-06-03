@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
-import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR } from '../constants/ActionTypes';
+import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR, APPOINTMENT_CREATED, CREATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENT_DELETED } from '../constants/ActionTypes';
 import dispatcher from '../dispatcher/Dispatcher';
-import axios from '../config';
+import myAxios from '../config';
 
 class PatientStore extends EventEmitter {
 
@@ -16,6 +16,12 @@ class PatientStore extends EventEmitter {
         console.log("PatientStore LOGIN_PATIENT case");
         this.loginPatient(action.payload);
         break;
+      case CREATE_APPOINTMENT:
+        this.createAppointment(action.payload);
+        break;
+      case DELETE_APPOINTMENT:
+        this.deleteAppointment(action.payload);
+        break;
       default:
         console.log("PatientStore default");
         break;
@@ -29,11 +35,7 @@ class PatientStore extends EventEmitter {
     const { name, surname, email, password } = user;
 
     // Hasta kaydı için gerekli HTTP POST isteği yap
-    axios.post('/patient/register', { name, surname, email, password }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    myAxios.post('/patient/register', { name, surname, email, password })
       .then(response => response.data)
       .then(data => {
         console.log("Data:", data);
@@ -55,14 +57,10 @@ class PatientStore extends EventEmitter {
   loginPatient(user) {
 
     //Hasta giriş bilgilerini al
-    const {email, password} = user;
+    const { email, password } = user;
 
     // Hasta girişi için gerekli HTTP POST isteği yap
-    axios.post('/patient/login', { email, password }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    myAxios.post('/patient/login', { email, password })
       .then(response => response.data)
       .then(data => {
         console.log("Data:", data);
@@ -79,6 +77,48 @@ class PatientStore extends EventEmitter {
       .catch(error => {
         console.error('Hasta giris hatasi:', error);
         this.emit(PATIENT_LOGIN_ERROR);
+      });
+  }
+
+  createAppointment(form) {
+
+    //Randevu bilgilerini al
+    const { patientId, psychologistId, appointmentDate, appointmentTime } = form;
+
+    myAxios.post('/appointments', { patientId, psychologistId, appointmentDate, appointmentTime })
+      .then(response => response.data)
+      .then(data => {
+        console.log("Data:", data);
+        if (data.success) {
+          // Randevu başarıyla oluşturulduğunda emit işlemi gerçekleştir
+          this.emit(APPOINTMENT_CREATED, data);
+        } else {
+          // Hata
+        }
+      })
+      .catch(error => {
+        console.error('Randevu olusturma hatasi:', error);
+      });
+  }
+
+  deleteAppointment(appointment) {
+
+    //Randevu id al
+    const { appointmentId } = appointment;
+
+    myAxios.delete('/appointments/' + appointmentId)
+      .then(response => response.data)
+      .then(data => {
+        console.log("Data:", data);
+        if (data.success) {
+          // Randevu başarıyla silindi
+          this.emit(APPOINTMENT_DELETED, data);
+        } else {
+          // Hata
+        }
+      })
+      .catch(error => {
+        console.error('Randevu silme hatasi:', error);
       });
   }
 

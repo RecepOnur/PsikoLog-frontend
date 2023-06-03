@@ -33,7 +33,7 @@ const PatientSignUp = () => {
       patientStore.off(PATIENT_REGISTERED, handleRegistered);
       patientStore.on(PATIENT_REGISTER_ERROR, handleRegisterError);
     };
-  });
+  }, []);
 
 
 

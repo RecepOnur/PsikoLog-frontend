@@ -31,7 +31,7 @@ const PsychologistSignUp = (props) => {
       psychologistStore.off(PSYCHOLOGIST_REGISTERED, handleRegistered);
       psychologistStore.off(PSYCHOLOGIST_REGISTER_ERROR, handleRegisterError);
     };
-  });
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

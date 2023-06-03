@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-const instance = axios.create({
+const myAxios = axios.create({
   baseURL: 'http://localhost:3000'
 });
 
 export const setAuthToken = token => {
   if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      myAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
   else
-      delete axios.defaults.headers.common["Authorization"];
+      delete myAxios.defaults.headers.common["Authorization"];
 }
 
-export default instance;
+export default myAxios;
