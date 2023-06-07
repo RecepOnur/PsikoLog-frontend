@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR, APPOINTMENT_CREATED, CREATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENT_DELETED } from '../constants/ActionTypes';
+import { LOGIN_PATIENT, PATIENT_LOGGEDIN, PATIENT_REGISTERED, REGISTER_PATIENT, PATIENT_REGISTER_ERROR, PATIENT_LOGIN_ERROR, APPOINTMENT_CREATED, CREATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENT_DELETED, ADD_COMMENT, COMMENT_ADDED } from '../constants/ActionTypes';
 import dispatcher from '../dispatcher/Dispatcher';
 import myAxios from '../config';
 
@@ -21,6 +21,9 @@ class PatientStore extends EventEmitter {
         break;
       case DELETE_APPOINTMENT:
         this.deleteAppointment(action.payload);
+        break;
+      case ADD_COMMENT:
+        this.addComment(action.payload);
         break;
       default:
         console.log("PatientStore default");
@@ -119,6 +122,28 @@ class PatientStore extends EventEmitter {
       })
       .catch(error => {
         console.error('Randevu silme hatasi:', error);
+      });
+  }
+
+  addComment(comment) {
+
+    //Psikolog id al
+    const { id, commentText } = comment;
+    console.log("store:" + commentText);
+
+    myAxios.post('/psychologist/' + id + '/comment', { commentText })
+      .then(response => response.data)
+      .then(data => {
+        console.log("Data:", data);
+        if (data.success) {
+          // Yorum basarili
+          this.emit(COMMENT_ADDED, data);
+        } else {
+          // Hata
+        }
+      })
+      .catch(error => {
+        console.error('Yorum ekleme hatasi:', error);
       });
   }
 

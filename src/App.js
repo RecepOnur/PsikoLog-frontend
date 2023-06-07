@@ -14,13 +14,16 @@ import PsychologistProfile from './components/PsychologistProfile';
 import CreateAppointment from './components/CreateAppointment';
 import myAxios from './config';
 import Appointments from './components/Appointments';
+import AddComment from './components/AddComment';
+import ProtectedRoute from './components/ProtectedRoute';
+import { PATIENT } from './constants/UserTypes';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     console.log(isLoggedIn);
-    
+
     if (localStorage.getItem("token") != null) {
       setIsLoggedIn(true);
       setAuthToken(localStorage.getItem("token")); //Axios icin auth token
@@ -66,15 +69,15 @@ function App() {
           />
           <Route
             path="/createAppointment/:id"
-            element={<CreateAppointment />}
-          />
-          <Route
-            path="/createAppointment/:id"
-            element={<CreateAppointment />}
+            element={<ProtectedRoute element={<CreateAppointment />} type={PATIENT}/>}
           />
           <Route
             path="/appointments"
-            element={<Appointments />}
+            element={<ProtectedRoute element={<Appointments />} />}
+          />
+          <Route
+            path="/comment/:id"
+            element={<ProtectedRoute element={<AddComment />} type={PATIENT}/>}
           />
           <Route
             path="/chatbot"

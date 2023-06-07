@@ -42,7 +42,7 @@ const CreateAppointment = () => {
         patientStore.on(APPOINTMENT_CREATED, handleAppointmentCreated);
 
         return () => {
-            appStore.on(PSYCHOLOGIST_FETCHED, handlePsychologistFetched);
+            appStore.off(PSYCHOLOGIST_FETCHED, handlePsychologistFetched);
             patientStore.off(APPOINTMENT_CREATED, handleAppointmentCreated);
         };
     }, [id, navigate, psychologistId]);

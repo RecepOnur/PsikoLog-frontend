@@ -7,6 +7,7 @@ import { deleteAppointment } from "../actions/PatientActions";
 import patientStore from "../stores/PatientStore";
 import { approveAppointment, declineAppointment } from "../actions/PsychologistActions";
 import psychologistStore from "../stores/PsychologistStore";
+import { PATIENT, PSYCHOLOGIST } from "../constants/UserTypes";
 const Appointments = () => {
 
     const token = localStorage.getItem('token');
@@ -41,20 +42,20 @@ const Appointments = () => {
 
         appStore.on(APPOINTMENTS_FETCHED, handleAppointmentsFetched);
 
-        if (userType === "patient") {
+        if (userType === PATIENT) {
             patientStore.on(APPOINTMENT_DELETED, handleAppointmentDeleted);
         }
-        else if (userType === "psychologist") {
+        else if (userType === PSYCHOLOGIST) {
             psychologistStore.on(APPOINTMENT_APPROVED, handleAppointmentApproved);
             psychologistStore.on(APPOINTMENT_DECLINED, handleAppointmentDeclined);
         }
 
         return () => {
             appStore.off(APPOINTMENTS_FETCHED, handleAppointmentsFetched);
-            if (userType === "patient") {
+            if (userType === PATIENT) {
                 patientStore.off(APPOINTMENT_DELETED, handleAppointmentDeleted);
             }
-            else if (userType === "psychologist") {
+            else if (userType === PSYCHOLOGIST) {
                 psychologistStore.off(APPOINTMENT_APPROVED, handleAppointmentApproved);
                 psychologistStore.off(APPOINTMENT_DECLINED, handleAppointmentDeclined);
             }
@@ -77,7 +78,7 @@ const Appointments = () => {
         <div>
             <h1>Randevu Talepleri</h1>
             <ul>
-                {userType === "patient" && appointments.map((appointment) => (
+                {userType === PATIENT && appointments.map((appointment) => (
                     <li key={appointment.id}>
                         <p>Durum: {appointment.status !== "pending" ? appointment.status : <button onClick={() => handleCancelAppointment(appointment.id)}>İptal Et</button>}</p>
                         <p>Randevu Tarihi: {appointment.appointment_date}</p>
@@ -87,7 +88,7 @@ const Appointments = () => {
                         <p>Email: {appointment.email}</p>
                     </li>
                 ))}
-                {userType === "psychologist" && appointments.map((appointment) => (
+                {userType === PSYCHOLOGIST && appointments.map((appointment) => (
                     <li key={appointment.id}>
                         <p>Durum: {appointment.status !== "pending" ? appointment.status :
                             <div>

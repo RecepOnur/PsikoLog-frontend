@@ -1,7 +1,8 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher/Dispatcher';
 import myAxios from '../config';
-import { FETCH_PSYCHOLOGISTS, PSYCHOLOGISTS_FETCHED, FETCH_PSYCHOLOGIST, PSYCHOLOGIST_FETCHED, FETCH_APPOINTMENTS, APPOINTMENTS_FETCHED } from '../constants/ActionTypes';
+import { FETCH_PSYCHOLOGISTS, PSYCHOLOGISTS_FETCHED, FETCH_PSYCHOLOGIST, PSYCHOLOGIST_FETCHED, FETCH_APPOINTMENTS, APPOINTMENTS_FETCHED, FETCH_COMMENTS, COMMENTS_FETCHED } from '../constants/ActionTypes';
+import { PATIENT, PSYCHOLOGIST } from '../constants/UserTypes';
 
 class AppStore extends EventEmitter {
 
@@ -19,6 +20,9 @@ class AppStore extends EventEmitter {
       case FETCH_APPOINTMENTS:
         console.log("FETCH APPOINTMENTS case");
         this.getAppointments(action.payload);
+        break;
+      case FETCH_COMMENTS:
+        this.getComments(action.payload);
         break;
       default:
         console.log("AppStore default");
@@ -64,7 +68,7 @@ class AppStore extends EventEmitter {
   getAppointments(user) {
     const { id, userType } = user;
     console.log("getAppointments appStore: " + id);
-    if (userType === "patient") {
+    if (userType === PATIENT) {
       myAxios.get('/patient/' + id + '/appointments')
         .then(response => response.data)
         .then(data => {
@@ -79,7 +83,7 @@ class AppStore extends EventEmitter {
           console.error('Hasta Randevulari alma hatasi:', error);
         });
     }
-    else if (userType === "psychologist") {
+    else if (userType === PSYCHOLOGIST) {
       console.log(userType + " id: " + id);
       myAxios.get('/psychologist/appointments')
         .then(response => response.data)
@@ -99,6 +103,25 @@ class AppStore extends EventEmitter {
       console.log("getAppointments userType error!");
     }
   }
+
+  getComments(psychologist) {
+    const { id } = psychologist;
+    console.log("Psychologist ID: " + id);
+    myAxios.get('/psychologist/' + id + '/comments')
+      .then(response => response.data)
+      .then(data => {
+        if (data.success) {
+          // Basariliysa emit islemi gerceklestir.
+          this.emit(COMMENTS_FETCHED, data.comments);
+        } else {
+          // Hata durumu
+        }
+      })
+      .catch(error => {
+        console.error('Yorumlari alma hatasi:', error);
+      });
+  }
+
 
 }
 
