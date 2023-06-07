@@ -19,12 +19,12 @@ const Navbar = (props) => {
       <ul>
         <li><Link to="/">Ana Sayfa</Link></li>
         <li><Link to="/psychologists">Psikologlar</Link></li>
-        <li><Link to="/appointments">Randevularım</Link></li>
         <li><Link to="/chatbot">ChatBot</Link></li>
         {props.isLoggedIn ? (
           <>
             {/* Giriş yapıldıktan sonra gösterilecek öğeler */}
             <li>
+              <li><Link to="/appointments">Randevularım</Link></li>
               <button onClick={handleLogout}>Çıkış Yap</button>
             </li>
           </>

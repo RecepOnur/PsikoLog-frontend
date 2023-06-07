@@ -62,22 +62,44 @@ class AppStore extends EventEmitter {
   }
 
   getAppointments(user) {
-    const { id } = user;
+    const { id, userType } = user;
     console.log("getAppointments appStore: " + id);
-    myAxios.get('/patient/' + id + '/appointments')
-      .then(response => response.data)
-      .then(data => {
-        if (data.success) {
-          // Basariliysa emit islemi gerceklestir.
-          this.emit(APPOINTMENTS_FETCHED, data.appointments);
-        } else {
-          // Hata durumu
-        }
-      })
-      .catch(error => {
-        console.error('Randevulari alma hatasi:', error);
-      });
+    if (userType === "patient") {
+      myAxios.get('/patient/' + id + '/appointments')
+        .then(response => response.data)
+        .then(data => {
+          if (data.success) {
+            // Basariliysa emit islemi gerceklestir.
+            this.emit(APPOINTMENTS_FETCHED, data.appointments);
+          } else {
+            // Hata durumu
+          }
+        })
+        .catch(error => {
+          console.error('Hasta Randevulari alma hatasi:', error);
+        });
+    }
+    else if (userType === "psychologist") {
+      console.log(userType + " id: " + id);
+      myAxios.get('/psychologist/appointments')
+        .then(response => response.data)
+        .then(data => {
+          if (data.success) {
+            // Basariliysa emit islemi gerceklestir.
+            this.emit(APPOINTMENTS_FETCHED, data.appointments);
+          } else {
+            // Hata durumu
+          }
+        })
+        .catch(error => {
+          console.error('Psikolog Randevulari alma hatasi:', error);
+        });
+    }
+    else {
+      console.log("getAppointments userType error!");
+    }
   }
+
 }
 
 const appStore = new AppStore();
