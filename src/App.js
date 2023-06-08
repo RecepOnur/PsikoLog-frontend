@@ -16,7 +16,9 @@ import myAxios from './config';
 import Appointments from './components/Appointments';
 import AddComment from './components/AddComment';
 import ProtectedRoute from './components/ProtectedRoute';
-import { PATIENT } from './constants/UserTypes';
+import { PATIENT, PSYCHOLOGIST } from './constants/UserTypes';
+import CreateBlogPost from './components/CreateBlogPost';
+import BlogPost from './components/BlogPost';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,7 +33,6 @@ function App() {
     }
   }
     , [isLoggedIn])
-
 
 
   return (
@@ -69,7 +70,7 @@ function App() {
           />
           <Route
             path="/createAppointment/:id"
-            element={<ProtectedRoute element={<CreateAppointment />} type={PATIENT}/>}
+            element={<ProtectedRoute element={<CreateAppointment />} type={PATIENT} />}
           />
           <Route
             path="/appointments"
@@ -77,11 +78,19 @@ function App() {
           />
           <Route
             path="/comment/:id"
-            element={<ProtectedRoute element={<AddComment />} type={PATIENT}/>}
+            element={<ProtectedRoute element={<AddComment />} type={PATIENT} />}
+          />
+          <Route
+            path="/psychologist/createBlogPost"
+            element={<ProtectedRoute element={<CreateBlogPost />} type={PSYCHOLOGIST} />}
           />
           <Route
             path="/chatbot"
             element={<ChatBot />}
+          />
+          <Route
+            path="/blogPost/:postId"
+            element={<BlogPost />}
           />
         </Routes>
       </div>

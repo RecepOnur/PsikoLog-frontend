@@ -1,4 +1,4 @@
-import { FETCH_PSYCHOLOGISTS, FETCH_PSYCHOLOGIST, FETCH_APPOINTMENTS, FETCH_COMMENTS } from "../constants/ActionTypes";
+import { FETCH_PSYCHOLOGISTS, FETCH_PSYCHOLOGIST, FETCH_APPOINTMENTS, FETCH_COMMENTS, FETCH_BLOG_POST, FETCH_BLOG_POSTS } from "../constants/ActionTypes";
 import dispatcher from "../dispatcher/Dispatcher";
 
 export const getPsychologists = () => {
@@ -25,5 +25,19 @@ export const getComments = (psychologist) => {
     dispatcher.dispatch({
         type: FETCH_COMMENTS,
         payload: psychologist
+    });
+}
+
+export const getBlogPost = (blogPost) => {
+    dispatcher.dispatch({
+        type: FETCH_BLOG_POST,
+        payload: blogPost
+    });
+}
+
+export const getBlogPosts = (psychologistId) => {
+    dispatcher.dispatch({
+        type: FETCH_BLOG_POSTS,
+        payload: psychologistId
     });
 }

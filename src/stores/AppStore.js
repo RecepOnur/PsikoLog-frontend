@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher/Dispatcher';
 import myAxios from '../config';
-import { FETCH_PSYCHOLOGISTS, PSYCHOLOGISTS_FETCHED, FETCH_PSYCHOLOGIST, PSYCHOLOGIST_FETCHED, FETCH_APPOINTMENTS, APPOINTMENTS_FETCHED, FETCH_COMMENTS, COMMENTS_FETCHED } from '../constants/ActionTypes';
+import { FETCH_PSYCHOLOGISTS, PSYCHOLOGISTS_FETCHED, FETCH_PSYCHOLOGIST, PSYCHOLOGIST_FETCHED, FETCH_APPOINTMENTS, APPOINTMENTS_FETCHED, FETCH_COMMENTS, COMMENTS_FETCHED, FETCH_BLOG_POST, BLOG_POST_FETCHED, FETCH_BLOG_POSTS, BLOG_POSTS_FETCHED } from '../constants/ActionTypes';
 import { PATIENT, PSYCHOLOGIST } from '../constants/UserTypes';
 
 class AppStore extends EventEmitter {
@@ -23,6 +23,12 @@ class AppStore extends EventEmitter {
         break;
       case FETCH_COMMENTS:
         this.getComments(action.payload);
+        break;
+      case FETCH_BLOG_POST:
+        this.getBlogPost(action.payload);
+        break;
+      case FETCH_BLOG_POSTS:
+        this.getBlogPosts(action.payload);
         break;
       default:
         console.log("AppStore default");
@@ -122,6 +128,42 @@ class AppStore extends EventEmitter {
       });
   }
 
+  getBlogPost(blogPost) {
+    const { postId } = blogPost;
+    console.log("getBlogPost:" + postId);
+    myAxios.get('/blogPost/' + postId)
+      .then(response => response.data)
+      .then(data => {
+        if (data.success) {
+          // Basariliysa emit islemi gerceklestir.
+          this.emit(BLOG_POST_FETCHED, data.blogPost);
+        } else {
+          // Hata durumu
+        }
+      })
+      .catch(error => {
+        console.error('Blog yazısı alma hatasi:', error);
+      });
+  }
+
+  getBlogPosts(psychologistId) {
+    const { id } = psychologistId;
+    console.log("getBlogPosts: " + id);
+    myAxios.get('/blogPosts/' + id)
+      .then(response => response.data)
+      .then(data => {
+        if (data.success) {
+          console.log("getBlogPosts basarili.");
+          // Basariliysa emit islemi gerceklestir.
+          this.emit(BLOG_POSTS_FETCHED, data.blogPosts);
+        } else {
+          // Hata durumu
+        }
+      })
+      .catch(error => {
+        console.error('Blog yazısı alma hatasi:', error);
+      });
+  }
 
 }
 
