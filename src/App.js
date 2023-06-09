@@ -19,9 +19,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { PATIENT, PSYCHOLOGIST } from './constants/UserTypes';
 import CreateBlogPost from './components/CreateBlogPost';
 import BlogPost from './components/BlogPost';
+import Messages from './components/Messages';
+import SendMessage from './components/SendMessage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
     console.log(isLoggedIn);
@@ -92,6 +95,14 @@ function App() {
             path="/blogPost/:postId"
             element={<BlogPost />}
           />
+          <Route
+            path="/messages"
+            element={<ProtectedRoute element={<Messages />} />}
+          />
+          <Route
+            path="/sendMessage/:psychologistId"
+            element={<ProtectedRoute element={<SendMessage />} type={PATIENT} />}
+            />
         </Routes>
       </div>
     </Router>

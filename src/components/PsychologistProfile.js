@@ -5,12 +5,14 @@ import appStore from '../stores/AppStore';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import { PSYCHOLOGIST } from '../constants/UserTypes';
 
 function PsychologistProfile(props) {
   const [psychologist, setPsychologist] = useState(null);
   const [comments, setComments] = useState(null);
   const [blogPosts, setBlogPosts] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   console.log(JSON.stringify(blogPosts));
 
@@ -23,6 +25,7 @@ function PsychologistProfile(props) {
     if (token) {
       const decodedToken = jwt_decode(token);
       setUserId(decodedToken.userId);
+      setUserType(decodedToken.userType);
     }
   }, [])
 
@@ -66,11 +69,8 @@ function PsychologistProfile(props) {
           <p>Soyad: {psychologist.surname}</p>
           <p>Email: {psychologist.email}</p>
           {
-            userId ? ((userId === psychologistId) ? (
+            userId ? ((userId === psychologistId && userType === PSYCHOLOGIST) ? (
               <div>
-                <Link to={`/updateProfile/`}>
-                  <button>Profili Güncelle</button>
-                </Link>
                 <Link to={`/psychologist/createBlogPost`}>
                   <button>Yeni Blog Yazısı Yaz</button>
                 </Link>
@@ -78,6 +78,9 @@ function PsychologistProfile(props) {
               <div>
                 <Link to={`/createAppointment/${id}`}>
                   <button>Randevu Talep Et</button>
+                </Link>
+                <Link to={`/sendMessage/${id}`}>
+                  <button>Mesaj Gönder</button>
                 </Link>
                 <Link to={`/comment/${id}`}>
                   <button>Yorum Yap</button>

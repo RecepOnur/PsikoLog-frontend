@@ -25,6 +25,7 @@ const Navbar = (props) => {
             {/* Giriş yapıldıktan sonra gösterilecek öğeler */}
             <li>
               <li><Link to="/appointments">Randevularım</Link></li>
+              <li><Link to="/messages">Mesajlarım</Link></li>
               <button onClick={handleLogout}>Çıkış Yap</button>
             </li>
           </>
