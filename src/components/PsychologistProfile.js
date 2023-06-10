@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { PSYCHOLOGIST } from '../constants/UserTypes';
+import { Container, Button } from 'react-bootstrap';
 
 function PsychologistProfile(props) {
   const [psychologist, setPsychologist] = useState(null);
@@ -60,7 +61,7 @@ function PsychologistProfile(props) {
   }, [id]);
 
   return (
-    <div>
+    <Container>
       <h2>Psikolog Profil Sayfası</h2>
       {psychologist ? (
         <>
@@ -68,26 +69,32 @@ function PsychologistProfile(props) {
           <p>Ad: {psychologist.name}</p>
           <p>Soyad: {psychologist.surname}</p>
           <p>Email: {psychologist.email}</p>
-          {
-            userId ? ((userId === psychologistId && userType === PSYCHOLOGIST) ? (
+          {userId ? (
+            userId === psychologistId && userType === PSYCHOLOGIST ? (
               <div>
                 <Link to={`/psychologist/createBlogPost`}>
-                  <button>Yeni Blog Yazısı Yaz</button>
+                  <Button variant="primary">Yeni Blog Yazısı Yaz</Button>
                 </Link>
-              </div>) : (
+              </div>
+            ) : (
               <div>
                 <Link to={`/createAppointment/${id}`}>
-                  <button>Randevu Talep Et</button>
+                  <Button variant="primary">Randevu Talep Et</Button>
                 </Link>
                 <Link to={`/sendMessage/${id}`}>
-                  <button>Mesaj Gönder</button>
+                  <Button variant="primary">Mesaj Gönder</Button>
                 </Link>
                 <Link to={`/comment/${id}`}>
-                  <button>Yorum Yap</button>
+                  <Button variant="primary">Yorum Yap</Button>
                 </Link>
-              </div>)) : (<div><p>Randevu almak için giriş yapmalısınız.</p></div>)
-          }
-
+              </div>
+            )
+          ) : (
+            <div>
+              <p>Randevu almak için giriş yapmalısınız.</p>
+            </div>
+          )}
+  
           <h3>Blog Yazıları:</h3>
           {blogPosts ? (
             blogPosts.map((blogPost) => (
@@ -100,7 +107,7 @@ function PsychologistProfile(props) {
           ) : (
             <p>Blog yazısı bulunamadı.</p>
           )}
-
+  
           <h3>Yorumlar:</h3>
           {comments ? (
             comments.map((comment) => (
@@ -116,9 +123,8 @@ function PsychologistProfile(props) {
         </>
       ) : (
         <p>Yükleniyor...</p>
-      )
-      }
-    </div >
+      )}
+    </Container>
   );
 
 }
