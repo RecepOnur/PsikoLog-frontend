@@ -3,6 +3,7 @@ import { loginPatient } from '../actions/PatientActions';
 import { PATIENT_LOGGEDIN, PATIENT_LOGIN_ERROR } from '../constants/ActionTypes';
 import patientStore from '../stores/PatientStore';
 import { useNavigate } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
 
 const PatientSignIn = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
@@ -50,36 +51,34 @@ const PatientSignIn = ({ setIsLoggedIn }) => {
   const { email, password } = formData;
 
   return (
-    <div>
-      <div className="form-container">
-        <h2>Hasta Giris Yap</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">E-posta:</label>
-            <input
+    <Container>
+      <div className="containerForm">
+        <h2>Hasta Giriş Yap</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="email">
+            <Form.Label>E-posta:</Form.Label>
+            <Form.Control
               type="email"
-              id="email"
               name="email"
               value={email}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Şifre:</label>
-            <input
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Şifre:</Form.Label>
+            <Form.Control
               type="password"
-              id="password"
               name="password"
               value={password}
               onChange={handleInputChange}
               required
             />
-          </div>
-          <button type="submit">Giris Yap</button>
-        </form>
+          </Form.Group>
+          <Button variant="primary" type="submit">Giriş Yap</Button>
+        </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 

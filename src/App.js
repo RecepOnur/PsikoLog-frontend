@@ -21,6 +21,7 @@ import CreateBlogPost from './components/CreateBlogPost';
 import BlogPost from './components/BlogPost';
 import Messages from './components/Messages';
 import SendMessage from './components/SendMessage';
+import ChatBotMessages from './components/ChatBotMessages';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

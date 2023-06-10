@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import psychologistStore from '../stores/PsychologistStore';
 import { registerPsychologist } from '../actions/PsychologistActions';
 import { PSYCHOLOGIST_REGISTERED, PSYCHOLOGIST_REGISTER_ERROR } from '../constants/ActionTypes';
+import { Container, Form, Button } from 'react-bootstrap';
 
-const PsychologistSignUp = (props) => {
-
+const PsychologistSignUp = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -14,7 +14,6 @@ const PsychologistSignUp = (props) => {
   });
 
   useEffect(() => {
-
     const handleRegistered = () => {
       window.alert("Kayıt başarılı!");
     };
@@ -37,7 +36,7 @@ const PsychologistSignUp = (props) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -49,69 +48,66 @@ const PsychologistSignUp = (props) => {
   const { email, password, confirmPassword, name, surname } = formData;
 
   return (
-    <div>
-    <div className="form-container">
-      <h2>Psikolog Kayıt Ol</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="firstName">İsim:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={name}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="surname">Soyisim:</label>
-          <input
-            type="text"
-            id="surname"
-            name="surname"
-            value={surname}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">E-posta:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Şifre:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Şifre Tekrarı:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <button type="submit">Kayıt Ol</button>
-      </form>
-    </div>
-    </div>
+    <Container>
+      <div className="form-con containerForm">
+        <h2>Psikolog Kayıt Ol</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="name">
+            <Form.Label>İsim:</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={name}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="surname">
+            <Form.Label>Soyisim:</Form.Label>
+            <Form.Control
+              type="text"
+              name="surname"
+              value={surname}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="email">
+            <Form.Label>E-posta:</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Şifre:</Form.Label>
+            <Form.Control
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <Form.Group controlId="confirmPassword">
+            <Form.Label>Şifre Tekrarı:</Form.Label>
+            <Form.Control
+              type="password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleInputChange}
+              required
+            />
+          </Form.Group>
+          <div className="text-center">
+            <Button variant="primary" type="submit">Kayıt Ol</Button>
+          </div>
+        </Form>
+      </div>
+    </Container>
   );
 };
 
