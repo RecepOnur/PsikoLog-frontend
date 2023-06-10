@@ -7,6 +7,7 @@ import { sendMessage } from '../actions/MessageActions';
 import messageStore from '../stores/MessageStore';
 import { MESSAGE_SENT } from '../constants/ActionTypes';
 import { useNavigate } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
 
 function SendMessage() {
     const [message, setMessage] = useState('');
@@ -47,22 +48,32 @@ function SendMessage() {
         sendMessage({ to: psychologist.id, text: message});
     };
 
-    return (
-        <div>
-            {psychologist ? (<div><h2>Mesaj Gönder</h2>
-            <div>
-                <label>Psikolog Adı: {psychologist.name}</label>
-            </div>
-            <div>
-                <label>Psikolog Soyadı: {psychologist.surname}</label>
-            </div>
-            <div>
-                <label>Mesaj:</label>
-                <input type="text" value={message} onChange={handleMessageChange} />
-            </div>
-            <button onClick={handleSubmit}>Gönder</button></div>) : (<p>Yükleniyor...</p>)}
-        </div>
-    );
-}
+   return (
+  <Container>
+    {psychologist ? (
+      <div>
+        <h2>Mesaj Gönder</h2>
+        <Form>
+          <Form.Group>
+            <Form.Label>Psikolog Adı:</Form.Label>
+            <Form.Control type="text" value={psychologist.name} disabled />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Psikolog Soyadı:</Form.Label>
+            <Form.Control type="text" value={psychologist.surname} disabled />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Mesaj:</Form.Label>
+            <Form.Control type="text" value={message} onChange={handleMessageChange} />
+          </Form.Group>
+          <Button variant="primary" onClick={handleSubmit}>Gönder</Button>
+        </Form>
+      </div>
+    ) : (
+      <p>Yükleniyor...</p>
+    )}
+  </Container>
+);
+    }
 
 export default SendMessage;
