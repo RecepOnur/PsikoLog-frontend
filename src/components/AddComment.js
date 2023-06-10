@@ -5,6 +5,7 @@ import { COMMENT_ADDED, PSYCHOLOGIST_FETCHED } from "../constants/ActionTypes";
 import { getPsychologist } from "../actions/AppActions";
 import appStore from "../stores/AppStore";
 import patientStore from "../stores/PatientStore";
+import { Container, Form, Button } from 'react-bootstrap';
 
 const AddComment = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const AddComment = () => {
 
 
   return (
-    <div>
+    <Container>
       <h2>Psikolog Yorum Sayfası</h2>
       {psychologist && (
         <div>
@@ -58,18 +59,19 @@ const AddComment = () => {
           <p>Psikolog Soyad: {psychologist.surname}</p>
         </div>
       )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="comment">Yorum:</label>
-          <textarea
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label htmlFor="comment">Yorum:</Form.Label>
+          <Form.Control
+            as="textarea"
             id="comment"
             value={commentText}
             onChange={handleCommentChange}
-          ></textarea>
-        </div>
-        <button type="submit">Yorumu Gönder</button>
-      </form>
-    </div>
+          />
+        </Form.Group>
+        <Button type="submit">Yorumu Gönder</Button>
+      </Form>
+    </Container>
   );
 };
 
